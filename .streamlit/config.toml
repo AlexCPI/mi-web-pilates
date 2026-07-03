@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#4E6E58"         # Verde oliva suave para botones y destacados
+backgroundColor = "#F4F7F5"      # Fondo de la web grisáceo/verde muy claro y relajante
+secondaryBackgroundColor = "#E6ECE8" # Fondo de cajas y selectores ligeramente más oscuro
+textColor = "#2F3E35"            # Texto en un tono verde noche/gris oscuro para una lectura cómoda
+font = "sans serif"
