@@ -1,4 +1,3 @@
-Python
 import streamlit as st
 
 # 1. TÍTULO Y PRESENTACIÓN DE TU MARCA
