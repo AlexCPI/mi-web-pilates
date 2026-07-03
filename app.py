@@ -1,5 +1,14 @@
 import streamlit as st
 
+# INYECTAR COLORES DIRECTAMENTE EN LA WEB
+st.markdown("""
+<style>
+    .stApp { background-color: #F4F7F5; color: #2F3E35; }
+    div[data-testid="stSubmitButton"] button { background-color: #4E6E58 !important; color: white !important; }
+</style>
+""", unsafe_allow_html=True)
+
+# (A partir de aquí dejas todo tu código de las columnas y el formulario exactamente igual)
 # Ajuste para que la página aproveche mejor el ancho de pantalla
 st.set_page_config(layout="wide")
 
