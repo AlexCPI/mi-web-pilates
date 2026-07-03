@@ -1,21 +1,26 @@
 import streamlit as st
 
-# 1. TÍTULO Y PRESENTACIÓN
-st.title("Centrum: Clinical Pilates")
-st.subheader("Clases grupales en el corazón de la ciudad")
-st.write("Mejoramos tu postura, reducimos tu dolor y fortalecemos tu cuerpo con base clínica.")
+# Ajuste para que la página aproveche mejor el ancho de pantalla
+st.set_page_config(layout="wide")
 
-# 2. LISTA DE SERVICIOS GENERALES
-servicios_pilates = [
-    "Clases Grupales Reducidas (Máx. 6 personas)",
-    "Evaluación de Postura Inicial",
-    "Pilates Terapéutico y Readaptación",
-    "Control Motor y Flexibilidad"
-]
+# 1 y 2. ESTRUCTURA EN COLUMNAS (Diseño visual avanzado)
+col1, col2 = st.columns(2)
 
-st.markdown("### Lo que ofrecemos:")
-for servicio in servicios_pilates:
-    st.write(f"✅ {servicio}")
+with col1:
+    st.title("Centrum: Clinical Pilates")
+    st.subheader("Clases grupales en el centro de la ciudad")
+    st.write("Mejoramos tu postura, reducimos tu dolor y fortalecemos tu cuerpo con base clínica de forma segura y personalizada.")
+
+with col2:
+    st.markdown("### ✨ Nuestros Servicios")
+    servicios_pilates = [
+        "Clases Grupales Reducidas (Máx. 6)",
+        "Evaluación de Postura Inicial",
+        "Pilates Terapéutico y Readaptación",
+        "Control Motor y Flexibilidad"
+    ]
+    for servicio in servicios_pilates:
+        st.write(f"✅ {servicio}")
 
 # --- AQUÍ EMPIEZA LA NUEVA OPCIÓN B ---
 # 3. EL DICCIONARIO DE HORARIOS (El cerebro de la app)
