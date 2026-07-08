@@ -1,65 +1,71 @@
 import streamlit as st
 
-# INYECTAR COLORES DIRECTAMENTE EN LA WEB
-st.markdown("""
-<style>
-    .stApp { background-color: #F4F7F5; color: #2F3E35; }
-    div[data-testid="stSubmitButton"] button { background-color: #4E6E58 !important; color: white !important; }
-</style>
-""", unsafe_allow_html=True)
-
-# (A partir de aquí dejas todo tu código de las columnas y el formulario exactamente igual)
-# Ajuste para que la página aproveche mejor el ancho de pantalla
+# Configuración de página ancha y diseño
 st.set_page_config(layout="wide")
 
-# 1 y 2. ESTRUCTURA EN COLUMNAS (Diseño visual avanzado)
+# --- MEMORIA DE LA WEB (Caja Fuerte) ---
+# Si la lista de alumnos no existe en la memoria, la creamos vacía por primera vez
+if "lista_alumnos" not in st.session_state:
+    st.session_state["lista_alumnos"] = []
+
+# --- NUESTRA FUNCIÓN PERSONALIZADA ---
+# Creamos un protocolo (función) para registrar alumnos de forma ordenada
+def registrar_alumno(nombre_nuevo, objetivo_nuevo):
+    # Creamos un diccionario (ficha de cliente) con sus datos
+    ficha_cliente = {
+        "nombre": nombre_nuevo,
+        "objetivo": objetivo_nuevo
+    }
+    # Guardamos la ficha dentro de la caja fuerte de la sesión
+    st.session_state["lista_alumnos"].append(ficha_cliente)
+
+
+# --- INTERFAZ VISUAL ---
 col1, col2 = st.columns(2)
 
 with col1:
     st.title("Centrum: Clinical Pilates")
-    st.subheader("Clases grupales en el centro de la ciudad")
-    st.write("Mejoramos tu postura, reducimos tu dolor y fortalecemos tu cuerpo con base clínica de forma segura y personalizada.")
+    st.subheader("Clases grupales e inteligentes")
+    st.write("Mejoramos tu postura y reducimos tu dolor con base clínica.")
+    
+    st.write("---")
+    st.markdown("### 🧘 Registro de Alumno Nuevo")
+    
+    # Formulario de entrada
+    nombre = st.text_input("¿Cómo te llamas?", key="input_nombre")
+    
+    horarios_salud = {
+        "Dolor de Espalda / Lumbalgia": "Martes y Jueves a las 8:30 AM",
+        "Post-parto / Suelo Pélvico": "Lunes y Miércoles a las 10:30 AM",
+        "Rendimiento Deportivo / Flexibilidad": "Lunes y Miércoles a las 19:30 PM",
+        "Adulto Mayor / Movilidad": "Martes y Jueves a las 11:30 AM"
+    }
+    
+    objetivo_salud = st.selectbox(
+        "¿Cuál es tu principal objetivo de salud?",
+        list(horarios_salud.keys())
+    )
+    
+    # Botón que activa la función
+    if st.button("Confirmar Registro e Inscripción"):
+        if nombre.strip() != "": # Validamos que no esté vacío
+            # LLAMAMOS a la función pasándole los datos de las cajas de texto
+            registrar_alumno(nombre, objetivo_salud)
+            st.success(f"¡Excelente {nombre}! Te has registrado correctamente para: {objetivo_salud}")
+        else:
+            st.warning("Por favor, introduce tu nombre antes de confirmar.")
 
 with col2:
-    st.markdown("### ✨ Nuestros Servicios")
-    servicios_pilates = [
-        "Clases Grupales Reducidas (Máx. 6)",
-        "Evaluación de Postura Inicial",
-        "Pilates Terapéutico y Readaptación",
-        "Control Motor y Flexibilidad"
-    ]
-    for servicio in servicios_pilates:
-        st.write(f"✅ {servicio}")
-
-# --- AQUÍ EMPIEZA LA NUEVA OPCIÓN B ---
-# 3. EL DICCIONARIO DE HORARIOS (El cerebro de la app)
-# Asociamos cada objetivo de salud con su grupo recomendado
-horarios_salud = {
-    "Dolor de Espalda / Lumbalgia": "Martes y Jueves a las 8:30 AM (Enfoque terapéutico y descompresión)",
-    "Post-parto / Suelo Pélvico": "Lunes y Miércoles a las 10:30 AM (Recuperación segura y control motor)",
-    "Rendimiento Deportivo / Flexibilidad": "Lunes y Miércoles a las 19:30 PM (Progreso dinámico y fuerza)",
-    "Adulto Mayor / Movilidad": "Martes y Jueves a las 11:30 AM (Movilidad suave y prevención de caídas)"
-}
-
-st.write("---")
-st.markdown("### 🧘 Tu Recomendación de Salud Personalizada")
-
-nombre = st.text_input("¿Cómo te llamas?")
-
-# Creamos un selector desplegable con las claves de nuestro diccionario
-objetivo_salud = st.selectbox(
-    "¿Cuál es tu principal objetivo o necesidad de salud actual?",
-    list(horarios_salud.keys()) # Esto extrae automáticamente las opciones del diccionario
-)
-
-# El Condicional Inteligente: extrae la información usando la clave seleccionada
-if nombre:
-    horario_recomendado = horarios_salud[objetivo_salud]
-    st.info(f"Hola **{nombre}**, basándonos en tu objetivo de *{objetivo_salud}*, tu grupo ideal es:")
-    st.success(f"🗓️ **{horario_recomendado}**")
-
-# 4. BOTÓN FINAL DE CONTACTO
-st.write("---")
-if st.button("Consultar plazas y reservar"):
-    st.success("¡Excelente decisión! Te esperamos en nuestro centro en la Calle Mayor, Nº 12 (Plaza Central).")
-    st.info("📱 Envíanos un mensaje al WhatsApp: +34 600 000 000 para confirmar tu asistencia.")
+    st.markdown("### 📊 Panel de Administración (Simulación DB)")
+    st.write("Aquí verás en tiempo real los alumnos que se van registrando en esta sesión:")
+    
+    # Leemos la lista desde la caja fuerte y la mostramos en pantalla
+    if len(st.session_state["lista_alumnos"]) == 0:
+        st.info("Aún no hay alumnos registrados en esta sesión. ¡Sé el primero!")
+    else:
+        # Recorremos la lista de alumnos registrados usando un bucle for
+        for i, alumno in enumerate(st.session_state["lista_alumnos"], 1):
+            st.markdown(f"**{i}. {alumno['nombre']}** — 🎯 Objetivo: *{alumno['objective_salud' if 'objective_salud' in alumno else 'objetivo']}*")
+            
+    st.write("---")
+    st.caption("Nota: Esta lista se mantendrá viva mientras mantengas la pestaña abierta gracias a st.session_state.")
